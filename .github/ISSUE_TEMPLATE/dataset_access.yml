@@ -1,6 +1,6 @@
 name: 数据集访问申请（Dataset Access Application）
 description: 申请获取 The REFN Dataset（请先下载并签署许可证 PDF）
-title: "数据集申请： {inputs.name } -  {inputs.organization}"
+title: "数据集申请：${{ inputs.name }} - ${{ inputs.organization }}"
 labels: ["application"]
 # assignees: ["你的GitHub用户名"]   # 可选：自动指派给审核人
 
