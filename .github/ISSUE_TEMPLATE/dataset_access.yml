@@ -1,31 +1,31 @@
-name: 数据集访问申请（Dataset Access Application）
-description: 申请获取 The REFN Dataset（请先下载并签署许可证 PDF）
-title: "数据集申请：${{ inputs.name }} - ${{ inputs.organization }}"
+name: Dataset Access Application
+description: Apply for access to The REFN Dataset (please download and sign the license PDF first)
+title: "Dataset Application: ${{ inputs.name }} - ${{ inputs.organization }}"
 labels: ["application"]
-# assignees: ["你的GitHub用户名"]   # 可选：自动指派给审核人
+# assignees: ["your-github-username"]   # optional: auto-assign to reviewer
 
 body:
   - type: markdown
     attributes:
       value: |
-        **请先下载并签署许可证：**
+        **Please download and sign the license first:**
         https://scut-acig.github.io/dataset-site/assets/REFN_Dataset_License_Agreement.pdf
 
-        提交本表单后，请在本 Issue 的评论区**拖拽上传**已签署的 PDF（或粘贴网盘链接）。
+        After submitting this form, please **upload the signed PDF** in the comments of this Issue (or provide a cloud link).
 
   - type: input
     id: name
     attributes:
-      label: 姓名 / Name
-      placeholder: 例如：张三
+      label: Full Name
+      placeholder: e.g., John Smith
     validations:
       required: true
 
   - type: input
     id: email
     attributes:
-      label: 电子邮箱 / Email
-      description: 我们会通过该邮箱联系你（请确保可接收外部邮件）
+      label: Email Address
+      description: We will contact you via this email (please make sure it is valid).
       placeholder: your@email.com
     validations:
       required: true
@@ -33,76 +33,76 @@ body:
   - type: dropdown
     id: country
     attributes:
-      label: 国家 / Country
+      label: Country
       options:
-        - 中国
-        - 新加坡
-        - 美国
-        - 英国
-        - 德国
-        - 日本
-        - 韩国
-        - 其他
+        - China
+        - Singapore
+        - United States
+        - United Kingdom
+        - Germany
+        - Japan
+        - Korea
+        - Other
     validations:
       required: true
 
   - type: input
     id: organization
     attributes:
-      label: 机构 / Organization
-      placeholder: 学校/公司全称
+      label: Organization
+      placeholder: University / Company full name
     validations:
       required: true
 
   - type: input
     id: department
     attributes:
-      label: 部门 / Department（可选）
-      placeholder: 学院/系/研究所
+      label: Department (optional)
+      placeholder: School / Department / Institute
 
   - type: input
     id: lab_url
     attributes:
-      label: 实验室主页（可选）/ Lab Homepage (optional)
+      label: Lab Homepage (optional)
       placeholder: https://...
 
   - type: input
     id: position
     attributes:
-      label: 职位 / Position
-      placeholder: 学生 / 研究员 / 工程师 等
+      label: Position
+      placeholder: Student / Researcher / Engineer etc.
     validations:
       required: true
 
   - type: input
     id: advisor_name
     attributes:
-      label: 主管/导师姓名（可选）/ Advisor (optional)
+      label: Advisor Name (optional)
 
   - type: input
     id: advisor_email
     attributes:
-      label: 主管/导师邮箱（可选）/ Advisor Email (optional)
+      label: Advisor Email (optional)
 
   - type: textarea
     id: usage
     attributes:
-      label: 数据集用途说明 / Intended Use
-      description: 简述项目名称、研究方向、预计成果（最多 300 字）
-      placeholder: 我将在课题《……》中用于……，成果预计……
+      label: Intended Use
+      description: Briefly describe your project, research direction, and expected outcome (max 300 words).
+      placeholder: I will use the dataset in the project "..." for ..., expected outcome is ...
     validations:
       required: true
 
   - type: checkboxes
     id: agreement
     attributes:
-      label: 使用承诺 / Agreement
+      label: Usage Agreement
       options:
-        - label: 我承诺仅将该数据集用于学术研究，遵守许可证条款，不用于任何商业目的。
+        - label: I confirm that this dataset will be used for academic research only, in compliance with the license agreement, and not for any commercial purpose.
           required: true
 
   - type: markdown
     attributes:
       value: |
-        **重要：**提交后，请在本 Issue 的评论区**拖拽上传**已签署的许可证 PDF（或粘贴云盘链接）。
-        若无法上传，请邮件联系我们：qchm@scut.edu.cn
+        **Important:** After submitting, please upload the signed license PDF in the comments of this Issue (or paste a cloud link).
+        If you cannot upload, please contact us via email: qchm@scut.edu.cn
