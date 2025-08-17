@@ -1,41 +1,61 @@
-name: Retitle new dataset applications
+name: Retitle dataset applications
+
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled, edited]
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   retitle:
-    if: contains(github.event.issue.labels.*.name, 'application')
     runs-on: ubuntu-latest
     steps:
-      - name: Extract fields from issue body
+      - name: Extract Name/Org from hidden markers (most reliable)
         id: parse
         uses: actions/github-script@v7
         with:
           script: |
             const body = context.payload.issue.body || "";
-            // Forms usually render like:
-            // **Full Name**
-            // John Smith
-            //
-            // **Organization**
-            // Tsinghua University
-            function valueAfter(label){
-              const re = new RegExp(`\\*\\*${label}\\*\\*\\s*\\n+\\s*([\\s\\S]*?)(\\n\\n|$)`, 'i');
-              const m = body.match(re);
-              return m ? m[1].trim() : "";
+
+            // Read hidden HTML comments inserted by the Issue Form
+            const mName = body.match(/<!--\s*NAME:\s*([\s\S]*?)\s*-->/i);
+            const mOrg  = body.match(/<!--\s*ORG:\s*([\s\S]*?)\s*-->/i);
+
+            let name = mName ? mName[1].trim() : "";
+            let org  = mOrg  ? mOrg[1].trim()  : "";
+
+            // Fallback: try to grab common rendered patterns if hidden markers are missing
+            function fallback(labelList){
+              for (const label of labelList){
+                // **Label**  (bold)
+                let re = new RegExp(`\\*\\*${label}\\*\\*\\s*\\n+\\s*([\\s\\S]*?)(\\n\\n|$)`, 'i');
+                let m = body.match(re); if (m && m[1].trim()) return m[1].trim();
+
+                // Label (plain)
+                re = new RegExp(`${label}\\s*\\n+\\s*([\\s\\S]*?)(\\n\\n|$)`, 'i');
+                m = body.match(re); if (m && m[1].trim()) return m[1].trim();
+
+                // ##/### Label (heading)
+                re = new RegExp(`#{2,3}\\s*${label}\\s*\\n+\\s*([\\s\\S]*?)(\\n\\n|$)`, 'i');
+                m = body.match(re); if (m && m[1].trim()) return m[1].trim();
+              }
+              return "";
             }
-            const name = valueAfter("Full Name");
-            const org  = valueAfter("Organization");
-            core.setOutput("name", name);
-            core.setOutput("org", org);
+
+            if (!name) name = fallback(["Full Name","Name"]);
+            if (!org)  org  = fallback(["Organization","Organisation","Affiliation"]);
+
+            core.setOutput("name", name || "Unknown");
+            core.setOutput("org",  org  || "Unknown");
 
       - name: Update issue title
         uses: actions/github-script@v7
         with:
           script: |
-            const name = `${{ steps.parse.outputs.name }}` || "Unknown";
-            const org  = `${{ steps.parse.outputs.org }}`  || "Unknown";
+            const name = "${{ steps.parse.outputs.name }}";
+            const org  = "${{ steps.parse.outputs.org }}";
             const newTitle = `Dataset Application: ${name} - ${org}`;
             await github.rest.issues.update({
               ...context.repo,
