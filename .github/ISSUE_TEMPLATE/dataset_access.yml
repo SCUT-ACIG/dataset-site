@@ -106,3 +106,8 @@ body:
       value: |
         **Important:** After submitting, please upload the signed license PDF in the comments of this Issue (or paste a cloud link).
         If you cannot upload, please contact us via email: qchm@scut.edu.cn
+   - type: markdown
+     attributes:
+    value: |
+      <!-- NAME: ${{ inputs.name }} -->
+      <!-- ORG:  ${{ inputs.organization }} -->
