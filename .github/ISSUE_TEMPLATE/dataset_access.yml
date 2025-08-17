@@ -1,8 +1,8 @@
 name: Dataset Access Application
 description: Apply for access to The REFN Dataset (please download and sign the license PDF first)
-title: "Dataset Application: ${{inputs.name}} - ${{inputs.organization}}"
+title: "Dataset Application: ${{ inputs.name }} - ${{ inputs.organization }}"
 labels: ["application"]
-# assignees: ["your-github-username"]   # optional: auto-assign to reviewer
+# assignees: ["your-github-username"]   # optional: auto-assign a reviewer
 
 body:
   - type: markdown
@@ -18,6 +18,14 @@ body:
     attributes:
       label: Full Name
       placeholder: e.g., John Smith
+    validations:
+      required: true
+
+  - type: input
+    id: organization
+    attributes:
+      label: Organization
+      placeholder: e.g., Tsinghua University
     validations:
       required: true
 
@@ -43,14 +51,6 @@ body:
         - Japan
         - Korea
         - Other
-    validations:
-      required: true
-
-  - type: input
-    id: organization
-    attributes:
-      label: Organization
-      placeholder: University / Company full name
     validations:
       required: true
 
@@ -97,6 +97,7 @@ body:
     id: agreement
     attributes:
       label: Usage Agreement
+    # 这一行必须为数组形式，GitHub 才会显示勾选框
       options:
         - label: I confirm that this dataset will be used for academic research only, in compliance with the license agreement, and not for any commercial purpose.
           required: true
@@ -106,8 +107,10 @@ body:
       value: |
         **Important:** After submitting, please upload the signed license PDF in the comments of this Issue (or paste a cloud link).
         If you cannot upload, please contact us via email: qchm@scut.edu.cn
-   - type: markdown
-     attributes:
-    value: |
-      <!-- NAME: ${{ inputs.name }} -->
-      <!-- ORG:  ${{ inputs.organization }} -->
+
+  # Hidden markers for workflow to reliably parse values (won't be visible on the page)
+  - type: markdown
+    attributes:
+      value: |
+        <!-- NAME: ${{ inputs.name }} -->
+        <!-- ORG:  ${{ inputs.organization }} -->
